@@ -2,6 +2,8 @@
 
 This FSM uses Enum to keep track of states and Functions to handler the transitions from one state to another.
 
+[Nuget](https://www.nuget.org/packages/SimpleFSM/)
+
 This Enum keeps track of the state:
 ```csharp
 public enum TestStates
