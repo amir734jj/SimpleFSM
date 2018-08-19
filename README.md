@@ -1,4 +1,4 @@
-##SimpleFSM
+## SimpleFSM
 
 This FSM uses Enum to keep track of states and Functions to handler the transitions from one state to another.
 
