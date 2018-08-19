@@ -90,7 +90,7 @@ namespace SimpleFSM.Test
                     // Throw some exception
                     throw expectedException;
                 })
-                .SetExceptionHandler((currenState, payload, exception) =>
+                .SetExceptionHandler((currentState, payload, exception) =>
                 {
                     // Validate the exception
                     Assert.Equal(expectedException, exception);
