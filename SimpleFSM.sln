@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleFSM", "SimpleFSM\SimpleFSM.csproj", "{2D3283EE-6AEC-45FC-8E84-4A7EFA43E5C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleFSM.Test", "SimpleFSM.Test\SimpleFSM.Test.csproj", "{86DAFE92-3E24-40F8-853C-D59AF8F4E787}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D3283EE-6AEC-45FC-8E84-4A7EFA43E5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3283EE-6AEC-45FC-8E84-4A7EFA43E5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3283EE-6AEC-45FC-8E84-4A7EFA43E5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3283EE-6AEC-45FC-8E84-4A7EFA43E5C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86DAFE92-3E24-40F8-853C-D59AF8F4E787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86DAFE92-3E24-40F8-853C-D59AF8F4E787}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86DAFE92-3E24-40F8-853C-D59AF8F4E787}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86DAFE92-3E24-40F8-853C-D59AF8F4E787}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
