@@ -33,7 +33,7 @@ namespace SimpleFSM
         /// <returns></returns>
         public Task StartAsync(TPayload payload)
         {
-            return Task.Run(() => Start(payload));
+            return Task.Factory.StartNew(() => Start(payload));
         }
     }
 }
