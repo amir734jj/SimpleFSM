@@ -22,6 +22,9 @@ namespace SimpleFSM.Utilities
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static void Run(Action action) => action();
+        public static void Run(Action action)
+        {
+            action();
+        }
     }
 }

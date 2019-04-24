@@ -4,7 +4,7 @@ using SimpleFSM.Builders;
 namespace SimpleFSM.Interfaces
 {
     public interface ISimpleFsmBuilder<TNode, TPayload>
-        where TNode: struct, IConvertible
+        where TNode: Enum
         where TPayload: class
     {
         SimpleFsmBuilder<TNode, TPayload> SetStartState(TNode startState);

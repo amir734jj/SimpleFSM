@@ -10,7 +10,7 @@ using static SimpleFSM.Utilities.LambdaHelper;
 namespace SimpleFSM.Builders
 {
     public class SimpleFsmBuilder<TNode, TPayload> : BaseBuilder<SimpleFsmBuilder<TNode, TPayload>>, ISimpleFsmBuilder<TNode, TPayload>
-        where TNode: struct, IConvertible
+        where TNode: Enum
         where TPayload: class
     {
         /// <summary>
@@ -42,37 +42,43 @@ namespace SimpleFSM.Builders
         /// Constructor
         /// </summary>
         /// <exception cref="Exception"></exception>
-        public SimpleFsmBuilder() => Run(() =>
+        public SimpleFsmBuilder()
         {
-            // Set default exception handler
-            _exceptionHandler = (node, payload, _) => _endState;
-
-            if (!typeof(TNode).IsEnum)
+            Run(() =>
             {
-                throw new Exception("`TNode` type should be an Enum type.");
-            }
-        });
+                // Set default exception handler
+                _exceptionHandler = (node, payload, _) => _endState;
+            });
+        }
 
         /// <summary>
         /// Sets the start state
         /// </summary>
         /// <returns></returns>
-        public SimpleFsmBuilder<TNode, TPayload> SetStartState(TNode startState) => Run(() => _startState = startState, this);
+        public SimpleFsmBuilder<TNode, TPayload> SetStartState(TNode startState)
+        {
+            return Run(() => _startState = startState, this);
+        }
 
         /// <summary>
         /// Sets the end state
         /// </summary>
         /// <returns></returns>
-        public SimpleFsmBuilder<TNode, TPayload> SetEndState(TNode endState) => Run(() => _endState = endState, this);
-        
+        public SimpleFsmBuilder<TNode, TPayload> SetEndState(TNode endState)
+        {
+            return Run(() => _endState = endState, this);
+        }
+
         /// <summary>
         /// Add Edge handler
         /// </summary>
         /// <param name="node"></param>
         /// <param name="hanlder"></param>
         /// <returns></returns>
-        public SimpleFsmBuilder<TNode, TPayload> AddHandler(TNode node, Func<TNode, TPayload, TNode> hanlder) =>
-            Run(() => _graph[node] = hanlder, this);
+        public SimpleFsmBuilder<TNode, TPayload> AddHandler(TNode node, Func<TNode, TPayload, TNode> hanlder)
+        {
+            return Run(() => _graph[node] = hanlder, this);
+        }
 
         /// <summary>
         /// Add Edge handler
@@ -80,80 +86,95 @@ namespace SimpleFSM.Builders
         /// <param name="source"></param>
         /// <param name="destination"></param>
         /// <returns></returns>
-        public SimpleFsmBuilder<TNode, TPayload> AddTransition(TNode source, TNode destination) =>
-            Run(() => _graph[source] = (x, _) => destination, this);
+        public SimpleFsmBuilder<TNode, TPayload> AddTransition(TNode source, TNode destination)
+        {
+            return Run(() => _graph[source] = (x, _) => destination, this);
+        }
 
         /// <summary>
         /// Add delay between tasks
         /// </summary>
         /// <returns></returns>
-        public SimpleFsmBuilder<TNode, TPayload> AddDelay(int miliseconds = 100) => Run(() =>
+        public SimpleFsmBuilder<TNode, TPayload> AddDelay(int miliseconds = 100)
         {
-            _delay._status = true;
-            _delay._miliseconds = miliseconds;
-        }, this);
+            return Run(() =>
+            {
+                _delay._status = true;
+                _delay._miliseconds = miliseconds;
+            }, this);
+        }
 
         /// <summary>
         /// Sets the exception handler
         /// </summary>
         /// <param name="hanlder"></param>
         /// <returns></returns>
-        public SimpleFsmBuilder<TNode, TPayload> SetExceptionHandler(Func<TNode, TPayload, Exception, TNode> hanlder) =>
-            Run(() => _exceptionHandler = hanlder, this);
+        public SimpleFsmBuilder<TNode, TPayload> SetExceptionHandler(Func<TNode, TPayload, Exception, TNode> hanlder)
+        {
+            return Run(() => _exceptionHandler = hanlder, this);
+        }
 
         /// <summary>
         /// Fill Handlers
         /// </summary>
         /// <returns></returns>
-        private void FillHandlers() => Run(() =>
+        private void FillHandlers()
         {
-            // Get all values
-            var values = Enum.GetValues(typeof(TNode)).Cast<TNode>();
+            Run(() =>
+            {
+                // Get all values
+                var values = Enum.GetValues(typeof(TNode)).Cast<TNode>();
 
-            _graph.Keys.Where(x => !values.Contains(x)).ForEach(x => _graph[x] = (node, payload) => _endState);
-        }, this);
+                _graph.Keys.Where(x => !values.Contains(x)).ForEach(x => _graph[x] = (node, payload) => _endState);
+            }, this);
+        }
 
         /// <summary>
         /// Handles FSM
         /// </summary>
         /// <param name="payload"></param>
         /// <param name="currentNode"></param>
-        private void HandleFsm(TPayload payload, TNode currentNode) => Run(() =>
+        private void HandleFsm(TPayload payload, TNode currentNode)
         {
-            // Destination node
-            TNode destinationNode;
-            
-            // Catch the exception if any
-            try
+            Run(() =>
             {
-                // Run the handler
-                destinationNode = _graph[currentNode](currentNode, payload);
-            }
-            catch (Exception e)
-            {
-                // Use the exception handler
-                destinationNode = _exceptionHandler(currentNode, payload, e);
-            }
+                // Destination node
+                TNode destinationNode;
 
-            // If we have not reached the end
-            if (!_endState.Equals(destinationNode))
-            {
-                // If needed add thread.sleep
-                if (_delay._status)
+                // Catch the exception if any
+                try
                 {
-                    Thread.Sleep(_delay._miliseconds);
+                    // Run the handler
+                    destinationNode = _graph[currentNode](currentNode, payload);
                 }
-                
-                // Recursive
-                HandleFsm(payload, destinationNode);
-            }
-        });
+                catch (Exception e)
+                {
+                    // Use the exception handler
+                    destinationNode = _exceptionHandler(currentNode, payload, e);
+                }
+
+                // If we have not reached the end
+                if (!_endState.Equals(destinationNode))
+                {
+                    // If needed add thread.sleep
+                    if (_delay._status)
+                    {
+                        Thread.Sleep(_delay._miliseconds);
+                    }
+
+                    // Recursive
+                    HandleFsm(payload, destinationNode);
+                }
+            });
+        }
 
         /// <summary>
         /// Build the FSM
         /// </summary>
         /// <returns></returns>
-        public SimpleFsm<TPayload> Build() =>
-            Run(FillHandlers, new SimpleFsm<TPayload>(x => HandleFsm(x, _startState)));
+        public SimpleFsm<TPayload> Build()
+        {
+            return Run(FillHandlers, new SimpleFsm<TPayload>(x => HandleFsm(x, _startState)));
+        }
     }
 }

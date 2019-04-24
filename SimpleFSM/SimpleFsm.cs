@@ -21,13 +21,19 @@ namespace SimpleFSM
         /// Run the machine
         /// </summary>
         /// <param name="payload"></param>
-        public void Start(TPayload payload) => _recipe(payload);
+        public void Start(TPayload payload)
+        {
+            _recipe(payload);
+        }
 
         /// <summary>
         /// Run the machine in async fashion
         /// </summary>
         /// <param name="payload"></param>
         /// <returns></returns>
-        public Task StartAsync(TPayload payload) => Task.Run(() => Start(payload));
+        public Task StartAsync(TPayload payload)
+        {
+            return Task.Run(() => Start(payload));
+        }
     }
 }

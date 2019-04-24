@@ -6,6 +6,9 @@
     /// <typeparam name="T"></typeparam>
     public class BaseBuilder<T> where T : new()
     {
-        public static T New() => new T();
+        public static T New()
+        {
+            return new T();
+        }
     }
 }
