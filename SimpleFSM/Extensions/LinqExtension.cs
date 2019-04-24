@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SimpleFSM.Extensions
 {
-    public static class LinqExtension
+    internal static class LinqExtension
     {
         /// <summary>
         /// ForEach for IEnumerable
